@@ -80,7 +80,7 @@ set list
 autocmd vimenter * NERDTree
 map <C-n> :NERDTreeToggle<CR>
 " Autofocuson the file instead of the tree
-autocmd VimEnter * wincmd p
+autocmd VimEnter * if argc() != 0 | wincmd p | endif
 " Autoclose nerdtree if last window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "CSCOPE
