@@ -32,6 +32,12 @@ set tags=tags;/
 "
 " switch between header/source with F4
 nmap <F4> :e %:p:s,.h$,.X123X,:s,.c$,.h,:s,.X123X$,.c,<CR>
+" map it to ' , near the search /
+nmap ' :TlistToggle<CR>
+" set the tag list toggle automatically gain focus
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_WinWidth = 30
+
 
 compiler gcc
 set errorformat^=%-G%f:%l:\ warning:%m
