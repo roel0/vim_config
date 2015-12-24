@@ -92,19 +92,4 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "CSCOPE
 " see plugin dir , I use cscope_maps.vim
 
-" Autocomple tab function, if its empty a normal tab is inserted
-function! SuperCleverTab()
-  if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
-    return "\<Tab>"
-  else
-    if &omnifunc != ''
-      return "\<C-X>\<C-O>"
-    elseif &dictionary != ''
-      return "\<C-K>"
-    else
-      return "\<C-N>"
-    endif
-  endif
-endfunction
 
-inoremap <Tab> <C-R>=SuperCleverTab()<cr>
