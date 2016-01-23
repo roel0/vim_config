@@ -46,6 +46,14 @@ set mouse=a
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
+
+" Disable arrow keys because its a bad habit to use them!
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
+
 set expandtab
 
 set backupdir=~/.vim/backup//
