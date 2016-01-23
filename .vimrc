@@ -56,6 +56,13 @@ noremap <Right> <Nop>
 
 set expandtab
 
+" Remaps for holding shift to long errors which happens to often
+command WQ wq
+command Wq wq
+command W w
+command Q q
+
+
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
 set undodir=~/.vim/undo//
