@@ -17,6 +17,8 @@ if !(/usr/bin/git pull > /dev/null;) then
 fi
 printf '[OK]\n'
 
+git submodule init
+git submodule update
 printf 'Installing vim configuration ... '
 if !(cp -r ./.vim* ~/) then
   error_exit
