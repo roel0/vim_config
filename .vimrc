@@ -91,6 +91,7 @@ cmap w!! w !sudo tee % >/dev/null
 
 " Ignore the following types
 set wildignore+=*/build/*,*.so,*.swp,*.zip,*.elf,*.bin,*.hex
+set wildignore+=*/.git/*,*.obj,*.map,*.mmf
 " Dir to store backup of files
 set backupdir=~/.vim/backup//
 " Dir to store the swap files
