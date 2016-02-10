@@ -90,7 +90,8 @@ cmap w!! w !sudo tee % >/dev/null
 "#############
 
 " Ignore the following types
-set wildignore+=*/build/*,*.so,*.swp,*.zip,*.elf,*.bin,*.hex
+set wildignore+=*/build/*,*.so,*.swp,*.zip
+set wildignore+=.elf,*.bin,*.hex
 set wildignore+=*/.git/*,*.obj,*.map,*.mmf
 " Dir to store backup of files
 set backupdir=~/.vim/backup//
@@ -137,7 +138,9 @@ let g:ctrlp_switch_buffer = 0
 " Respect changes in the current PWD
 let g:ctrlp_working_path_mode = 0
 " Use ag for filesearching wich is really fast! (sudo pacman -S the_silver_searcher will install ag)
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+if executable("ag")
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+endif
 " Prevent autocomplete to search in include files (which is painfully slow)
 set complete-=i
 "Better tab completion
@@ -168,3 +171,9 @@ function! ToggleNumber()
          set relativenumber
      endif
 endfunc
+function! LoadCCTree()
+  if filereadable('cscope.out')
+    CCTreeLoadDB cscope.out
+  endif
+endfunc
+autocmd VimEnter * call LoadCCTree()
