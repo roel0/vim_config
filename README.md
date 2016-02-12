@@ -6,6 +6,7 @@ This is my personal vim configuration which is optimized for my needs and for c 
 ## How to install
 
 The vim configuration can be easily installed by running the provided script
+
 	git clone https://github.com/roel0/vim_config /a/local/path
 	sh /a/local/path/install.sh  [options] ARG
 
@@ -27,10 +28,10 @@ Rerun the installation script, it wil fetch the latest updates for you!
 * [NERD Tree](https://github.com/scrooloose/nerdtree): A tree explorer plugin for vim
 * [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim): Fuzzy file, buffer, mru and tag finder
 * [taglist.vim](https://github.com/vim-scripts/taglist.vim): Source code browser
-* [gundo.vim]("https://github.com/sjl/gundo.vim"): Graphical undo tree
-* [neocomplcache/vim]("https://github.com/Shougo/neocomplcache.vim"): Autocomplete
-* [cctree.vim"]("https://github.com/hari-rangarajan/CCTree"): A c tree call tree
-* [cscope_maps.vim]("https://github.com/chazy/cscope_maps"): Key mappings for cscope
+* [gundo.vim](https://github.com/sjl/gundo.vim): Graphical undo tree
+* [neocomplcache/vim](https://github.com/Shougo/neocomplcache.vim): Autocomplete
+* [cctree.vim"](https://github.com/hari-rangarajan/CCTree): A c tree call tree
+* [cscope_maps.vim](https://github.com/chazy/cscope_maps): Key mappings for cscope
 
 ## Included color schemes
 
