@@ -15,6 +15,10 @@ The vim configuration can be easily installed by running the provided script
 	   -n               Dry-run; only show what would be done.
 	   -d, --dest ARG   Installation directory (Default is ~)
 
+## Additional 
+
+Install [the silver searcher](https://github.com/ggreer/the_silver_searcher) (ag) on your system, CtrlP will be twice as fast!
+
 ## How to update to latest version?
 
 Rerun the installation script, it wil fetch the latest updates for you!
