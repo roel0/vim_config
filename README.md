@@ -25,12 +25,12 @@ Rerun the installation script, it wil fetch the latest updates for you!
 
 
 * [pathogen.vim](https://github.com/tpope/vim-pathogen): Manages the runtime path of the plugins
-* [NERD Tree](https://github.com/scrooloose/nerdtree): A tree explorer plugin for vim
+* [NERDTree.vim](https://github.com/scrooloose/nerdtree): A tree explorer plugin for vim
 * [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim): Fuzzy file, buffer, mru and tag finder
 * [taglist.vim](https://github.com/vim-scripts/taglist.vim): Source code browser
 * [gundo.vim](https://github.com/sjl/gundo.vim): Graphical undo tree
-* [neocomplcache/vim](https://github.com/Shougo/neocomplcache.vim): Autocomplete
-* [cctree.vim"](https://github.com/hari-rangarajan/CCTree): A c tree call tree
+* [neocomplcache.vim](https://github.com/Shougo/neocomplcache.vim): Autocomplete
+* [cctree.vim](https://github.com/hari-rangarajan/CCTree): A c tree call tree
 * [cscope_maps.vim](https://github.com/chazy/cscope_maps): Key mappings for cscope
 
 ## Included color schemes
