@@ -1,6 +1,7 @@
 # Roel0's vim configuration
 
 This is my personal vim configuration which is optimized for my needs and for c development. Feel free to use it if you like it!
+Anyone may send in pull request for improvements!
 
 
 ## How to install
