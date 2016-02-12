@@ -1,4 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/mnt/NxH2003_B1/sw/arm/NxH2003/apps/phExBleConnAl'
-let g:netrw_dirhist_2='/mnt/NxH2003_B1/sw/arm/NxH2003/apps/phExBleConnAl/src'
