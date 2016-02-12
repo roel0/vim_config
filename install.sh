@@ -34,7 +34,17 @@ plugin_loc=(
    "https://github.com/chazy/cscope_maps"
    "https://github.com/vim-scripts/taglist.vim"
    )
-
+color_name=(
+  "peaksea"
+  )
+color_loc=(
+  "https://github.com/vim-scripts/peaksea"
+  )
+dir=(
+  "swap"
+  "undo"
+  "backup"
+  )
 print_help() {
   echo "Options:"
   echo "   -h, --help       Display this message."
@@ -96,6 +106,8 @@ install_vimrc () {
             exit
             ;;
         esac
+        echo -n "Removing old configuration..."
+        assert_fail rm -rf $INSTALL_TO/.vim
     fi
     if [ ! -e "$INSTALL_TO/.vim" ]; then
       echo -n "Creating .vim dir in ${INSTALL_TO} ..."
@@ -124,6 +136,31 @@ install_vimrc () {
         assert_fail rm -rf ./*
         count=$(( $count + 1 ))
       done
+
+    count=0
+    while [ "x${color_name[count]}" != "x" ]
+    do
+        echo -n "Downloading ${color_name[count]} colorscheme..."
+        assert_fail git clone ${color_loc[count]}
+        _assert_fail rm -rf */.git*
+        _assert_fail rm -rf */.hg*
+        _assert_fail cd *
+        echo -n "Installing ${color_name[count]} color..."
+        assert_fail cp -r ./* $INSTALL_TO/.vim
+        _assert_fail cd ..
+        echo -n "Removing tempory files..."
+        assert_fail rm -rf ./*
+        count=$(( $count + 1 ))
+      done
+
+    count=0
+    while [ "x${dir[count]}" != "x" ]
+    do
+        echo -n "Creating directory for ${dir[count]}s..."
+        assert_fail mkdir $INSTALL_TO/.vim/${dir[count]}
+        count=$(( $count + 1 ))
+    done
+
     echo -n "Removing temp dir..."
     _assert_fail cd ..
     assert_fail rm -rf ./.roel0
