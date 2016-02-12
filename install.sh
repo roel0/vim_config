@@ -23,6 +23,7 @@ plugin_name=(
    "CCtree"
    "Cscope_maps"
    "Taglist"
+   "Startify"
    )
 plugin_loc=(
    "https://github.com/scrooloose/nerdtree"
@@ -33,6 +34,7 @@ plugin_loc=(
    "https://github.com/hari-rangarajan/CCTree"
    "https://github.com/chazy/cscope_maps"
    "https://github.com/vim-scripts/taglist.vim"
+   "https://github.com/mhinz/vim-startify"
    )
 color_name=(
   "peaksea"
