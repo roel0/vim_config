@@ -293,8 +293,9 @@ function! ToggleNumber()
      endif
 endfunc
 function! LoadCCTree()
-  if filereadable('cscope.out')
-    CCTreeLoadDB cscope.out
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    execute "CCTreeLoadDB " db
   endif
 endfunc
 
