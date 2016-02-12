@@ -229,11 +229,11 @@ set path=$PWD/**
 let g:ctrlp_match_window = 'bottom,order:ttb'
 " Always open a file in a new buffer
 let g:ctrlp_switch_buffer = 0
-" Respect changes in the current PWD
-let g:ctrlp_working_path_mode = 0
+" Set PWD to .svn/.git folder if found
+let g:ctrlp_working_path_mode = 'ra'
 " Use ag for filesearching wich is really fast! (sudo pacman -S the_silver_searcher will install ag)
 if executable("ag")
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --path-to-agignore=~/.agignore  --hidden -g ""'
 endif
 " Prevent autocomplete to search in include files (which is painfully slow)
 set complete-=i
@@ -294,3 +294,15 @@ endfunc
 autocmd BufWrite *.c :call DeleteTrailingWS()
 autocmd BufWrite *.h :call DeleteTrailingWS()
 autocmd BufWrite *.py :call DeleteTrailingWS()
+
+" Autoloading Cscope Database
+function! LoadCscope()
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
+  endif
+endfunction
+au BufEnter /* call LoadCscope()
