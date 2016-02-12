@@ -164,8 +164,10 @@ install_vimrc () {
     echo -n "Removing temp dir..."
     _assert_fail cd ..
     assert_fail rm -rf ./.roel0
-    echo -n "Installing colorsheme..."
-    assert_fail cp -r ./vim/colors $INSTALL_TO/.vim
+
+    echo -n "Installing ag ignore list..."
+    assert_fail cp agignore ~/.agignore
+
     echo -e "\nInstallation finished, have fun!"
 }
 
