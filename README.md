@@ -36,6 +36,7 @@ Rerun the installation script, it wil fetch the latest updates for you!
 * [neocomplcache.vim](https://github.com/Shougo/neocomplcache.vim): Autocomplete
 * [cctree.vim](https://github.com/hari-rangarajan/CCTree): A c tree call tree
 * [cscope_maps.vim](https://github.com/chazy/cscope_maps): Key mappings for cscope
+* [startify.vim](https://github.com/mhinz/vim-startify): A custom start up screen
 
 ## Included color schemes
 
