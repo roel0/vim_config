@@ -18,7 +18,15 @@ The vim configuration can be easily installed by running the provided script
 
 ## Additional 
 
-Install [the silver searcher](https://github.com/ggreer/the_silver_searcher) (ag) on your system, CtrlP will be twice as fast!
+In order to enable the full power of this vim configuration, install the following tools on your system:
+
+* [the silver searcher](https://github.com/ggreer/the_silver_searcher) (ag) CtrlP will be twice as fast! 
+* [ctags](https://sourceforge.net/projects/ctags/) For browsing source code with tags
+	Usage: Generarte a tag file in the root of your source tree
+	ctags -R
+* [cscope](http://cscope.sourceforge.net/) An even more powerfull source code browser
+	Usage: Run the provided script in the root of your source tree
+	sh ./cscope_gen.sh
 
 ## How to update to latest version?
 
