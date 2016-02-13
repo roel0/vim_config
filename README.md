@@ -1,6 +1,7 @@
 # Roel0's vim configuration
 
-This is my personal vim configuration which is optimized for my needs and for c development. Feel free to use it if you like it!
+This is my personal vim configuration which is optimized for C development. Feel free to use it if you like it! 
+
 Anyone may send in pull request for improvements!
 
 
@@ -29,7 +30,7 @@ In order to enable the full power of this vim configuration, install the followi
 * [cscope](http://cscope.sourceforge.net/) An even more powerfull source code browser
 ```
 	Usage: Run the provided script in the root of your source tree
-	sh ./cscope_gen.sh
+	sh cscope_gen.sh
 ```
 ## How to update to latest version?
 
@@ -40,15 +41,15 @@ Rerun the installation script, it wil fetch the latest updates for you!
 ## Included Plugins
 
 
-* [pathogen.vim](https://github.com/tpope/vim-pathogen): Manages the runtime path of the plugins
-* [NERDTree.vim](https://github.com/scrooloose/nerdtree): A tree explorer plugin for vim
-* [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim): Fuzzy file, buffer, mru and tag finder
-* [taglist.vim](https://github.com/vim-scripts/taglist.vim): Source code browser
+* [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim): Fuzzy file, buffer, mru and tag finder, so good it should be illegal!
+* [cscope_maps.vim](https://github.com/chazy/cscope_maps): My favorite key mappings for cscope
 * [gundo.vim](https://github.com/sjl/gundo.vim): Graphical undo tree
+* [taglist.vim](https://github.com/vim-scripts/taglist.vim): Source code browser
 * [neocomplcache.vim](https://github.com/Shougo/neocomplcache.vim): Autocomplete
-* [cctree.vim](https://github.com/hari-rangarajan/CCTree): A c tree call tree
-* [cscope_maps.vim](https://github.com/chazy/cscope_maps): Key mappings for cscope
 * [startify.vim](https://github.com/mhinz/vim-startify): A custom start up screen
+* [cctree.vim](https://github.com/hari-rangarajan/CCTree): A c tree call tree
+* [NERDTree.vim](https://github.com/scrooloose/nerdtree): A tree explorer plugin for vim
+* [pathogen.vim](https://github.com/tpope/vim-pathogen): Manages the runtime path of the plugins
 
 ## Included color schemes
 
