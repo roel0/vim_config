@@ -91,6 +91,7 @@ function assert_fail () {
       fi
     fi
 }
+
 install_vimrc () {
     if [ $DRYRUN -eq 0 ] && [  -e "$INSTALL_TO/.vimrc" ]; then
         warn "WARNING $INSTALL_TO/vimrc already exists!"
@@ -169,7 +170,26 @@ install_vimrc () {
 
     echo -n "Installing ag ignore list..."
     assert_fail cp agignore ~/.agignore
+    install_extra
+}
+install_extra() {
+    read -p "Do you want to install the cscope_gen script in /usr/bin (possible root priviliged required)? [yes/no] " yn
 
+    case $yn in
+            [Yy]* ) 
+            echo -n "Installing cscope_gen.sh to /usr/bin..."
+            assert_fail sudo cp extra/cscope_gen.sh /usr/bin
+            break
+            ;;
+            [Nn]* ) 
+            break
+            ;;
+            * ) 
+            echo "Please answer yes or no."
+            install_extra
+            exit
+            ;;
+        esac
     echo -e "\nInstallation finished, have fun!"
 }
 
