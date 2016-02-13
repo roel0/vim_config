@@ -37,9 +37,9 @@ In order to enable the full power of this vim configuration, install the followi
 Rerun the installation script, it wil fetch the latest updates for you!
 
 
-
 ## Included Plugins
 
+The plugins provided are all chosen in function of working speed and/or convenience. I escpacialy like to move around in big source projects with the help of the CtrlP and Cscope plugins. NerdTree is a classic way to explore your project and gives a more IDE feeling to vim and thus it's much slower. It is a bad habit to use it over CtrlP. However their are rare situations where it's still convenient to have.
 
 * [ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim): Fuzzy file, buffer, mru and tag finder, so good it should be illegal!
 * [cscope_maps.vim](https://github.com/chazy/cscope_maps): My favorite key mappings for cscope
