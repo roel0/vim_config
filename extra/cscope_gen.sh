@@ -7,3 +7,5 @@ find . -name '*.py' \
 # -q: create inverted index
 # -c: uncompressed
 cscope -b -q -c
+# cleanup
+rm cscope.files
