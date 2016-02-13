@@ -55,3 +55,9 @@ The plugins provided are all chosen in function of working speed and/or convenie
 
 * [peaksea](https://github.com/vim-scripts/peaksea)
 
+## Included functions
+
+* [LoadCscope] Automaticly locates the cscope database in your source tree and loads it.
+* [DeleteTrailingWS] Automaticly deletes all trailing whitespaces when you save a file with [.c|.h|.py] extension
+* [LoadCCTree] Load the CCTree database. This can take some time, thats why this function is not called on the startup (see mappings)
+* [ToggleNumber] Toggle between relative and normal line numbering (see mappings)
