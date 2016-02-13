@@ -71,7 +71,7 @@ failed() {
     echo -e '\E[31m'"\033[1m[ FAILED ]\033[0m"
 }
 
-function _assert_fail () {
+function _nonassert_fail () {
     if [ $DRYRUN -eq 0 ]; then
       "$@" > /dev/null 2>/tmp/roel0_err
     fi
@@ -88,6 +88,20 @@ function assert_fail () {
           echo ${ERR_OUTPUT}
           rm -rf .roel0
           exit
+      fi
+    fi
+}
+
+function nonassert_fail () {
+    if [ $DRYRUN -eq 1 ]; then
+        ok
+    else
+      if "$@" > /dev/null 2>/tmp/roel0_err; then
+         ok
+      else
+          failed
+          ERR_OUTPUT=$(</tmp/roel0_err)
+          echo ${ERR_OUTPUT}
       fi
     fi
 }
@@ -117,24 +131,24 @@ install_vimrc () {
       assert_fail mkdir $INSTALL_TO/.vim
     fi
     echo -n "Updating vimrc..."
-    assert_fail git pull
+    nonassert_fail git pull
     echo -n "Copying vimrc to install dir..."
     assert_fail cp ./vimrc $INSTALL_TO/.vimrc
     echo -n "Creating tempory directory..."
     assert_fail mkdir ./.roel0
-    _assert_fail cd .roel0
+    _nonassert_fail cd .roel0
 
     count=0
     while [ "x${plugin_name[count]}" != "x" ]
     do
         echo -n "Downloading ${plugin_name[count]} plugin..."
         assert_fail git clone ${plugin_loc[count]}
-        _assert_fail rm -rf */.git*
-        _assert_fail rm -rf */.hg*
-        _assert_fail cd *
+        _nonassert_fail rm -rf */.git*
+        _nonassert_fail rm -rf */.hg*
+        _nonassert_fail cd *
         echo -n "Installing ${plugin_name[count]} plugin..."
         assert_fail cp -r ./* $INSTALL_TO/.vim
-        _assert_fail cd ..
+        _nonassert_fail cd ..
         echo -n "Removing tempory files..."
         assert_fail rm -rf ./*
         count=$(( $count + 1 ))
@@ -145,12 +159,12 @@ install_vimrc () {
     do
         echo -n "Downloading ${color_name[count]} colorscheme..."
         assert_fail git clone ${color_loc[count]}
-        _assert_fail rm -rf */.git*
-        _assert_fail rm -rf */.hg*
-        _assert_fail cd *
+        _nonassert_fail rm -rf */.git*
+        _nonassert_fail rm -rf */.hg*
+        _nonassert_fail cd *
         echo -n "Installing ${color_name[count]} color..."
         assert_fail cp -r ./* $INSTALL_TO/.vim
-        _assert_fail cd ..
+        _nonassert_fail cd ..
         echo -n "Removing tempory files..."
         assert_fail rm -rf ./*
         count=$(( $count + 1 ))
@@ -165,7 +179,7 @@ install_vimrc () {
     done
 
     echo -n "Removing temp dir..."
-    _assert_fail cd ..
+    _nonassert_fail cd ..
     assert_fail rm -rf ./.roel0
 
     echo -n "Installing ag ignore list..."
