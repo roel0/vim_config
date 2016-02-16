@@ -107,6 +107,10 @@ set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let mapleader=","
+" Select pasted text
+nnoremap gp `[v`]
 " Switch CWD to the directory of the open buffer
 map ,cd :cd %:p:h<cr>:pwd<cr>
 
