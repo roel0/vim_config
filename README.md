@@ -62,3 +62,14 @@ The plugins provided are all chosen in function of working speed and/or convenie
 * **DeleteTrailingWS** Automaticly deletes all trailing whitespaces when you save a file with [.c|.h|.py] extension
 * **LoadCCTree** Load the CCTree database. This can take some time, thats why this function is not called on the startup (see mappings)
 * **ToggleNumber** Toggle between relative and normal line numbering (see mappings)
+
+## Screenshots
+
+# Startup screen
+![Startup screen](http://i67.tinypic.com/66yyi8.png)
+
+# Standard editing mode
+![Standard](http://i68.tinypic.com/o55il0.png)
+
+# Gundo history + relative line number on
+![Gundo](http://i65.tinypic.com/2d7atrb.png)
