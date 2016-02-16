@@ -50,6 +50,7 @@ The plugins provided are all chosen in function of working speed and/or convenie
 * [cctree.vim](https://github.com/hari-rangarajan/CCTree): A c tree call tree
 * [NERDTree.vim](https://github.com/scrooloose/nerdtree): A tree explorer plugin for vim
 * [pathogen.vim](https://github.com/tpope/vim-pathogen): Manages the runtime path of the plugins
+* [nerdcommenter.vim](https://github.com/scrooloose/nerdcommenter): Transform code quick to comments
 
 ## Included color schemes
 
