@@ -65,11 +65,14 @@ The plugins provided are all chosen in function of working speed and/or convenie
 
 ## Screenshots
 
-# Startup screen
+### Startup screen
 ![Startup screen](http://i67.tinypic.com/66yyi8.png)
 
-# Standard editing mode
+### Standard editing mode
 ![Standard](http://i68.tinypic.com/o55il0.png)
 
-# Gundo history + relative line number on
+### Cscope
+![Cscope](http://i64.tinypic.com/105ze3m.png)
+
+### Gundo history + relative line number on
 ![Gundo](http://i65.tinypic.com/2d7atrb.png)
