@@ -185,7 +185,7 @@ map <C-l> <C-w>l
 nnoremap <F5> :GundoToggle<CR>
 imap ff <Esc>
 
-nnoremap <C-w>e :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+nnoremap <C-w>e :SyntasticToggleMode<CR> :SyntasticCheck<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -306,11 +306,12 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_w = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-let g:syntastic_c_remove_include_errors=1
+let g:syntastic_c_remove_include_errors=0
+let g:syntastic_c_checkers=['make']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
