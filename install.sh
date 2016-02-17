@@ -25,6 +25,7 @@ plugin_name=(
    "Taglist"
    "Startify"
    "NerdCommenter"
+   "delimitMate"
    )
 plugin_loc=(
    "https://github.com/scrooloose/nerdtree"
@@ -37,6 +38,7 @@ plugin_loc=(
    "https://github.com/vim-scripts/taglist.vim"
    "https://github.com/mhinz/vim-startify"
    "https://github.com/scrooloose/nerdcommenter"
+   "https://github.com/Raimondi/delimitMate"
    )
 color_name=(
   "peaksea"
