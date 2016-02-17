@@ -26,6 +26,7 @@ plugin_name=(
    "Startify"
    "NerdCommenter"
    "delimitMate"
+   "syntastic"
    )
 plugin_loc=(
    "https://github.com/scrooloose/nerdtree"
@@ -39,6 +40,7 @@ plugin_loc=(
    "https://github.com/mhinz/vim-startify"
    "https://github.com/scrooloose/nerdcommenter"
    "https://github.com/Raimondi/delimitMate"
+   "https://github.com/scrooloose/syntastic"
    )
 color_name=(
   "peaksea"
@@ -191,12 +193,14 @@ install_vimrc () {
     install_extra
 }
 install_extra() {
-    read -p "Do you want to install the cscope_gen script in /usr/bin (possible root priviliged required)? [yes/no] " yn
+    read -p "Do you want to install the extra scripts in /usr/bin (possible root priviliged required)? [yes/no] " yn
 
     case $yn in
             [Yy]* ) 
             echo -n "Installing cscope_gen.sh to /usr/bin..."
             assert_fail sudo cp extra/cscope_gen.sh /usr/bin
+            echo -n "Installing syntastic_gen.sh to /usr/bin..."
+            assert_fail sudo cp extra/syntastic_gen.sh /usr/bin
             break
             ;;
             [Nn]* ) 
