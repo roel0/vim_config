@@ -121,10 +121,6 @@ map 0 ^
 map <space> /
 map <c-space> ?
 
-" Autocomplete with jk-keys
-inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
-inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
-
 " Command to open bufferbrowser
 map ,b :CtrlPBuffer<CR>
 
@@ -185,7 +181,7 @@ map <C-l> <C-w>l
 nnoremap <F5> :GundoToggle<CR>
 imap ff <Esc>
 
-nnoremap <C-w>e :SyntasticToggleMode<CR> :SyntasticCheck<CR>
+nnoremap <C-w>e :call SyntasticMakefile()<CR> 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -358,3 +354,16 @@ function! CenterHeader(lines) abort
   return centered_lines
 endfunction
 let g:startify_custom_header = CenterHeader(skull)
+
+" Determine syntactics based on compiling with makefile
+function! SyntasticMakefile()
+  " FInd the makefile of the open source file
+ let oldir = getcwd()
+  let dir = findfile("makefile", ".;")
+  if (!empty(dir))
+    let path = strpart(dir, 0, match(dir, "/makefile$"))
+    exe "cd " . path
+    exe "SyntasticCheck"
+    exe "cd " . oldir
+  endif
+endfunction
