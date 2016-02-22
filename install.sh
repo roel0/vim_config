@@ -44,14 +44,17 @@ plugin_loc=(
    )
 color_name=(
   "peaksea"
+  "gruvbox"
   )
 color_loc=(
   "https://github.com/vim-scripts/peaksea"
+  "https://github.com/morhetz/gruvbox"
   )
 dir=(
   "swap"
   "undo"
   "backup"
+  "ctrlp"
   )
 print_help() {
   echo "Options:"
