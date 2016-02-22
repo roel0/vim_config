@@ -25,7 +25,7 @@ set nocompatible
 set autoread
 
 " Keep cursor x lines from border
-set so=14
+set so=20
 
 " wrap lines without word break
 set wrap
@@ -104,25 +104,27 @@ set laststatus=2
 " Format the status line
 set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
 
+" Set to auto read when a file is changed from the outside
+set autoread
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 let mapleader=","
 " Select pasted text
-nnoremap gp `[v`]
+nmap gp `[v`]
 " Switch CWD to the directory of the open buffer
-map ,cd :cd %:p:h<cr>:pwd<cr>
+nmap <Leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Remap VIM 0 to first non-blank character
-map 0 ^
+nmap 0 ^
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+nmap <space> /
+nmap <C-space> ?
 
 " Command to open bufferbrowser
-map ,b :CtrlPBuffer<CR>
+nmap <Leader>b :CtrlPBuffer<CR>
 
 " Remaps for holding-shift-to-long-errors which happens to often
 command WQ wq
@@ -131,45 +133,30 @@ command W w
 command Q q
 
 " Disable arrow keys because its a bad habit to use them!
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
+map <Left> <Nop>
+map <Right> <Nop>
 
 " switch between header/source with F4
 nmap <F4> :e %:p:s,.h$,.X123X,:s,.c$,.h,:s,.X123X$,.c,<CR>
 
-" map it to ' , near the search /
-nmap ' :TlistToggle<CR>
-
-" NERDTree plugin (fileexplorer)
-map <C-n> :NERDTreeToggle<CR>
-
 " Map S as delete word and replace it without touching register
-nnoremap S "_diwP
+nmap S "_diwP
 
 " turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
-
-" Map togglenumber
-map <C-m> :call ToggleNumber()<CR>
-
-" Map cctree
-map <C-c> :call LoadCCTree()<CR>
-
-" When you forget sudo
-cmap w!! w !sudo tee % >/dev/null
+nmap <Leader><space> :nohlsearch<CR>
 
 " Quickly edit/reload the vimrc file
-nmap <silent> ,ev :e $MYVIMRC<CR>
-nmap <silent> ,sv :so $MYVIMRC<CR>
+nmap <Leader>ev :e $MYVIMRC<CR>
+nmap <Leader>sv :so $MYVIMRC<CR>
 
 " Remove the need for shift
-nnoremap ; :
+nmap ; :
 
 "Moving in rows, not in lines
-nnoremap j gj
-nnoremap k gk
+nmap j gj
+nmap k gk
 
 " Easy window navigation
 map <C-h> <C-w>h
@@ -178,10 +165,25 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " Graphical undo list
-nnoremap <F5> :GundoToggle<CR>
-imap ff <Esc>
+nmap <F5> :GundoToggle<CR>
 
-nnoremap <C-w>e :call SyntasticMakefile()<CR> 
+" check the Syntax of source file
+nmap <C-w>e :call SyntasticMakefile()<CR>
+
+" Map togglenumber
+noremap <C-,> :call ToggleNumber()<CR>
+
+" Map cctree
+map <C-c> :call LoadCCTree()<CR>
+
+" map it to ' , near the search /
+nmap ' :TlistToggle<CR>
+
+" NERDTree plugin (fileexplorer)
+map <C-n> :NERDTreeToggle<CR>
+
+" Remove the Windows ^M - when the encodings gets messed up
+nmap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -246,6 +248,7 @@ set wildmenu
 
  "Pathogen manages runtimepath
 execute pathogen#infect()
+
 " Load standard tag files
 set tags=tags;/
 " set the tag list toggle automatically gain focus
@@ -255,7 +258,6 @@ let Tlist_WinWidth = 30
 " Autoclose nerdtree if last window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -265,11 +267,6 @@ let g:neocomplcache_enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplcache_min_syntax_length = 3
 
-" Enable heavy features.
-" Use camel case completion.
-let g:neocomplcache_enable_camel_case_completion = 1
-" Use underbar completion.
-let g:neocomplcache_enable_underbar_completion = 1
 let skull = [
 \'',
 \'            ███████████████████████████',
