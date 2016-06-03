@@ -1,5 +1,5 @@
 #!/bin/sh
-find . -name '*.py' \
+find $PWD -name '*.py' \
 -o -iname '*.[CH]' \
 > cscope.files
 
