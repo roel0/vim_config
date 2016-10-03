@@ -27,6 +27,7 @@ plugin_name=(
    "NerdCommenter"
    "delimitMate"
    "syntastic"
+   "Conque-Shell"
    )
 plugin_loc=(
    "https://github.com/scrooloose/nerdtree"
@@ -41,6 +42,7 @@ plugin_loc=(
    "https://github.com/scrooloose/nerdcommenter"
    "https://github.com/Raimondi/delimitMate"
    "https://github.com/scrooloose/syntastic"
+   "https://github.com/oplatek/Conque-Shell"
    )
 color_name=(
   "peaksea"
