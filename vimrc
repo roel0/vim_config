@@ -13,6 +13,8 @@
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Set vim direcotry to .vim (windows)
+let &runtimepath.=',$HOME/.vim'
 " set UTF-8 encoding
 set enc=utf-8
 set fenc=utf-8
