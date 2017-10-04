@@ -10,3 +10,4 @@ find $PWD -name '*.py' \
 cscope -b -q -c
 # cleanup
 rm cscope.files
+rm cscope.out

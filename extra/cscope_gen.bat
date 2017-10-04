@@ -4,4 +4,5 @@ dir *.c *.h *.py *.groovy /s /b > cscope.files
 : -c: uncompressed
 cscope -b -q -c
 : cleanup
-rm cscope.files
+del cscope.files
+del cscope.out
