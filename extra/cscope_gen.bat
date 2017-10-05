@@ -5,4 +5,3 @@ dir *.c *.h *.py *.groovy /s /b > cscope.files
 cscope -b -q -c
 : cleanup
 del cscope.files
-del cscope.out

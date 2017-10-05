@@ -36,7 +36,7 @@ plugin_loc=(
    "https://github.com/tpope/vim-pathogen"
    "https://github.com/ctrlpvim/ctrlp.vim"
    "https://github.com/hari-rangarajan/CCTree"
-   "https://github.com/chazy/cscope_maps"
+   "https://github.com/roel0/cscope_maps"
    "https://github.com/vim-scripts/taglist.vim"
    "https://github.com/mhinz/vim-startify"
    "https://github.com/scrooloose/nerdcommenter"
