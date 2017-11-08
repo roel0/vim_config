@@ -173,13 +173,10 @@ nmap <F5> :GundoToggle<CR>
 nmap <C-w>e :call SyntasticMakefile()<CR>
 
 " Map togglenumber
-noremap <C-,> :call ToggleNumber()<CR>
+nmap <Leader>, :call ToggleNumber()<CR>
 
 " map it to ' , near the search /
 nmap ' :TlistToggle<CR>
-
-" NERDTree plugin (fileexplorer)
-map <C-n> :NERDTreeToggle<CR>
 
 " Remove the Windows ^M - when the encodings gets messed up
 nmap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
