@@ -15,34 +15,28 @@
 INSTALL_TO=~
 DRYRUN=0
 plugin_name=(
-   "NerdTree"
    "Gundo"
    "Neocomplcache"
    "Pathogen"
    "CtrlP"
-   "CCtree"
    "Cscope_maps"
    "Taglist"
    "Startify"
    "NerdCommenter"
    "delimitMate"
    "syntastic"
-   "Conque-Shell"
    )
 plugin_loc=(
-   "https://github.com/scrooloose/nerdtree"
    "https://github.com/sjl/gundo.vim"
    "https://github.com/Shougo/neocomplcache.vim"
    "https://github.com/tpope/vim-pathogen"
    "https://github.com/ctrlpvim/ctrlp.vim"
-   "https://github.com/hari-rangarajan/CCTree"
    "https://github.com/roel0/cscope_maps"
    "https://github.com/vim-scripts/taglist.vim"
    "https://github.com/mhinz/vim-startify"
    "https://github.com/scrooloose/nerdcommenter"
    "https://github.com/Raimondi/delimitMate"
    "https://github.com/scrooloose/syntastic"
-   "https://github.com/oplatek/Conque-Shell"
    )
 color_name=(
   "peaksea"

@@ -175,9 +175,6 @@ nmap <C-w>e :call SyntasticMakefile()<CR>
 " Map togglenumber
 noremap <C-,> :call ToggleNumber()<CR>
 
-" Map cctree
-map <C-c> :call LoadCCTree()<CR>
-
 " map it to ' , near the search /
 nmap ' :TlistToggle<CR>
 
@@ -190,7 +187,7 @@ nmap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ignore the following types
-set wildignore+=*/build/*,*.so,*.swp,*.zip
+set wildignore+=*.so,*.swp,*.zip
 set wildignore+=.elf,*.bin,*.hex
 set wildignore+=*/.git/*,*.obj,*.map,*.mmf
 
@@ -339,6 +336,40 @@ autocmd BufWrite *.c :call DeleteTrailingWS()
 autocmd BufWrite *.h :call DeleteTrailingWS()
 autocmd BufWrite *.py :call DeleteTrailingWS()
 
+function! UpdateCscope()
+    let db = findfile("cscope.out", ".;")
+    let cwd = getcwd()
+    let db_path = ""
+    " First check if there is already a database
+    if !empty(db)
+        db_path = strpart(db, 0, match(db, "/cscope.out$"))
+    else
+        " Find the root dir of the git project (if it is a git project)
+        while 1
+            let new_path = system('git rev-parse --show-toplevel')
+            let new_path = expand(substitute(new_path,"\n","",""))
+            if !isdirectory(new_path)
+                if !isdirectory(db_path)
+                    return
+                endif
+                break
+            endif
+            let db_path = new_path
+            exec 'cd' db_path
+            exec 'cd ..'
+        endwhile
+    endif
+    echo db_path
+    exec 'cd' db_path
+    call system('cscope_gen.sh')
+    exec 'cd' cwd
+endfunction
+
+autocmd BufWrite *.c :call UpdateCscope()
+autocmd BufWrite *.groovy :call UpdateCscope()
+autocmd BufWrite *.h :call UpdateCscope()
+autocmd BufWrite *.py :call UpdateCscope()
+
 " Autoloading Cscope Database
 function! LoadCscope()
   let db = findfile("cscope.out", ".;")
@@ -378,3 +409,7 @@ function! s:DiffWithSaved()
   exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! Diffsaved call s:DiffWithSaved()
+
+function! Strip(input_string)
+    return substitute(a:input_string, '^\s*\(.\{-}\)\s*$', '\1', '')
+endfunction
