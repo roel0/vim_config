@@ -339,7 +339,7 @@ function! UpdateCscope()
     let db_path = ""
     " First check if there is already a database
     if !empty(db)
-        db_path = strpart(db, 0, match(db, "/cscope.out$"))
+        let db_path = strpart(db, 0, match(db, "/cscope.out$"))
     else
         " Find the root dir of the git project (if it is a git project)
         while 1
