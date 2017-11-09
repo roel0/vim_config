@@ -49,9 +49,9 @@ compiler gcc
 set errorformat^=%-G%f:%l:\ warning:%m
 
 " size of a hard tabstop
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 
 " turn syntax highlighting on
