@@ -87,8 +87,6 @@ set history=10000
 " change the terminal's title
 set title
 
-" Paste from OS clipboard without autoindent
-set pastetoggle=<F2>
 
 " Set command bar height
 set cmdheight=2
@@ -140,19 +138,23 @@ map <Down> <Nop>
 map <Left> <Nop>
 map <Right> <Nop>
 
-" switch between header/source with F4
-nmap <F4> :e %:p:s,.h$,.X123X,:s,.c$,.h,:s,.X123X$,.c,<CR>
+" Paste from OS clipboard without autoindent
+set pastetoggle=<F2>
+
+" Toggle Codi
+nmap <F3> :Codi!!
+" Graphical undo list
+nmap <F5> :GundoToggle<CR>
+" Diff current buffer with the file on disk
+nmap <F6> :Diffsaved
+" trigger flake8
+autocmd FileType python map <buffer> <F7> :call Flake8()<CR>
 
 " Map S as delete word and replace it without touching register
 nmap S "_diwP
 
 " turn off search highlight
 nmap <Leader><space> :nohlsearch<CR>
-
-" Quickly edit/reload the vimrc file
-nmap <Leader>ev :e $MYVIMRC<CR>
-nmap <Leader>sv :so $MYVIMRC<CR>
-
 " Remove the need for shift
 nmap ; :
 
@@ -166,14 +168,9 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" Graphical undo list
-nmap <F5> :GundoToggle<CR>
-
-" check the Syntax of source file
-nmap <C-w>e :call SyntasticMakefile()<CR>
-
 " Map togglenumber
-nmap <Leader>, :call ToggleNumber()<CR>
+nmap <Leader>, :call ToggleRelNumber()<CR>
+nmap <Leader>. :call ToggleNumber()<CR>
 
 " map it to ' , near the search /
 nmap ' :TlistToggle<CR>
@@ -231,7 +228,7 @@ let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 'ra'
 " Use ag for filesearching wich is really fast! (sudo pacman -S the_silver_searcher will install ag)
 if executable("ag")
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --path-to-ignore=~/.agignore  --hidden -g ""'
+    let g:ctrlp_user_command = 'ag %s -l --nocolor --path-to-ignore=~/.agignore  --hidden -g ""'
 endif
 let g:ctrlp_use_caching = 1
 let g:ctrlp_clear_cache_on_exit = 0
@@ -250,9 +247,6 @@ set tags=tags;/
 " set the tag list toggle automatically gain focus
 let Tlist_GainFocus_On_ToggleOpen = 1
 let Tlist_WinWidth = 30
-
-" Autoclose nerdtree if last window
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -308,7 +302,7 @@ let g:syntastic_c_checkers=['make']
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " toggle between number and relativenumber
-function! ToggleNumber()
+function! ToggleRelNumber()
      if(&relativenumber == 1)
          set norelativenumber
          set number
@@ -316,97 +310,90 @@ function! ToggleNumber()
          set relativenumber
      endif
 endfunc
-function! LoadCCTree()
-  let db = findfile("cscope.out", ".;")
-  if (!empty(db))
-    execute "CCTreeLoadDB " db
-  endif
+
+function! ToggleNumber()
+    if(&number == 0)
+        set number
+    else
+        set nonumber
+    endif
 endfunc
 
-
 func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal `z"
 endfunc
 autocmd BufWrite *.c :call DeleteTrailingWS()
 autocmd BufWrite *.h :call DeleteTrailingWS()
 autocmd BufWrite *.py :call DeleteTrailingWS()
-
-function! UpdateCscope()
-    let db = findfile("cscope.out", ".;")
-    let cwd = getcwd()
-    let db_path = ""
-    " First check if there is already a database
-    if !empty(db)
-        let db_path = strpart(db, 0, match(db, "/cscope.out$"))
-    else
-        " Find the root dir of the git project (if it is a git project)
-        while 1
-            let new_path = system('git rev-parse --show-toplevel')
-            let new_path = expand(substitute(new_path,"\n","",""))
-            if !isdirectory(new_path)
-                if !isdirectory(db_path)
-                    return
-                endif
-                break
-            endif
-            let db_path = new_path
-            exec 'cd' db_path
-            exec 'cd ..'
-        endwhile
-    endif
-    echo db_path
-    exec 'cd' db_path
-    call system('cscope_gen.sh')
-    exec 'cd' cwd
-endfunction
-
-autocmd BufWrite *.c :call UpdateCscope()
-autocmd BufWrite *.groovy :call UpdateCscope()
-autocmd BufWrite *.h :call UpdateCscope()
-autocmd BufWrite *.py :call UpdateCscope()
+autocmd BufWrite *.groovy :call DeleteTrailingWS()
 
 " Autoloading Cscope Database
 function! LoadCscope()
-  let db = findfile("cscope.out", ".;")
-  if (!empty(db))
-    let path = strpart(db, 0, match(db, "/cscope.out$"))
-    set nocscopeverbose " suppress 'duplicate connection' error
-    exe "cs add " . db . " " . path
-    set cscopeverbose
-  endif
+    let db = findfile("cscope.out", ".;")
+    if (!empty(db))
+        let path = strpart(db, 0, match(db, "/cscope.out$"))
+        set nocscopeverbose
+        exe "cs add " . db . " " . path
+        set cscopeverbose
+    endif
 endfunction
 au BufEnter /* call LoadCscope()
+
 function! CenterHeader(lines) abort
-  let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
-  let centered_lines = map(copy(a:lines), 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
-  return centered_lines
+    let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
+    let centered_lines = map(copy(a:lines), 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+    return centered_lines
 endfunction
 let g:startify_custom_header = CenterHeader(skull)
 
-" Determine syntactics based on compiling with makefile
-function! SyntasticMakefile()
-  " FInd the makefile of the open source file
- let oldir = getcwd()
-  let dir = findfile("makefile", ".;")
-  if (!empty(dir))
-    let path = strpart(dir, 0, match(dir, "/makefile$"))
-    exe "cd " . path
-    exe "SyntasticCheck"
-    exe "cd " . oldir
-  endif
-endfunction
-
 function! s:DiffWithSaved()
-  let filetype=&ft
-  diffthis
-  vnew | r # | normal! 1Gdd
-  diffthis
-  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+    let filetype=&ft
+    diffthis
+    vnew | r # | normal! 1Gdd
+    diffthis
+    exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! Diffsaved call s:DiffWithSaved()
 
-function! Strip(input_string)
-    return substitute(a:input_string, '^\s*\(.\{-}\)\s*$', '\1', '')
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Async ( <3 VIM8 )
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! AsyncComplete(channel)
+    " show command output
+    if exists("g:debug")
+        execute "cfile! " . g:AsyncRunning
+        copen
+    endif
+    unlet g:AsyncRunning
 endfunction
+
+function! AsyncStart(command, cb)
+    if v:version < 800
+        echoerr 'Async functions require VIM8'
+        return
+    endif
+
+    if exists('g:AsyncRunning')
+        echo 'Already running task in background'
+    else
+        let g:AsyncRunning = tempname()
+        call job_start(a:command, {'close_cb': a:cb, 'out_io': 'file', 'out_name': g:AsyncRunning})
+    endif
+endfunction
+
+function! UpdateCscopeCb(channel)
+    unlet g:AsyncRunning
+    call LoadCscope()
+endfunction
+
+function! UpdateCscope()
+    exe 'cs kill -1'
+    call AsyncStart('cscope_gen.sh', 'UpdateCscopeCb')
+endfunction
+
+autocmd BufWrite *.c         :call UpdateCscope()
+autocmd BufWrite *.groovy    :call UpdateCscope()
+autocmd BufWrite *.h         :call UpdateCscope()
+autocmd BufWrite *.py        :call UpdateCscope()

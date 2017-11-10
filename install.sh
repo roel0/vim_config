@@ -16,7 +16,6 @@ INSTALL_TO=~
 DRYRUN=0
 plugin_name=(
    "Gundo"
-   "Neocomplcache"
    "Pathogen"
    "CtrlP"
    "Cscope_maps"
@@ -25,10 +24,12 @@ plugin_name=(
    "NerdCommenter"
    "delimitMate"
    "syntastic"
+   "completer"
+   "codi"
+   "flake8"
    )
 plugin_loc=(
    "https://github.com/sjl/gundo.vim"
-   "https://github.com/Shougo/neocomplcache.vim"
    "https://github.com/tpope/vim-pathogen"
    "https://github.com/ctrlpvim/ctrlp.vim"
    "https://github.com/roel0/cscope_maps"
@@ -37,6 +38,9 @@ plugin_loc=(
    "https://github.com/scrooloose/nerdcommenter"
    "https://github.com/Raimondi/delimitMate"
    "https://github.com/scrooloose/syntastic"
+   "https://github.com/maralla/completor.vim.git"
+   "https://github.com/metakirby5/codi.vim"
+   "https://github.com/nvie/vim-flake8"
    )
 color_name=(
   "peaksea"
