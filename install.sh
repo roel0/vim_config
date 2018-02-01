@@ -17,7 +17,7 @@ DRYRUN=0
 plugin_name=(
    "Gundo"
    "Pathogen"
-   "CtrlP"
+   "fzf"
    "Cscope_maps"
    "Taglist"
    "Startify"
@@ -31,7 +31,7 @@ plugin_name=(
 plugin_loc=(
    "https://github.com/sjl/gundo.vim"
    "https://github.com/tpope/vim-pathogen"
-   "https://github.com/ctrlpvim/ctrlp.vim"
+   "https://github.com/junegunn/fzf.vim"
    "https://github.com/roel0/cscope_maps"
    "https://github.com/vim-scripts/taglist.vim"
    "https://github.com/mhinz/vim-startify"

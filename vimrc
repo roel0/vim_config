@@ -124,7 +124,9 @@ nmap <space> /
 nmap <C-space> ?
 
 " Command to open bufferbrowser
-nmap <Leader>b :CtrlPBuffer<CR>
+nmap <Leader>b :Buffers<CR>
+nmap <Leader>c :Commits<CR>
+nmap <C-p> :Files<CR>
 
 " Remaps for holding-shift-to-long-errors which happens to often
 command WQ wq
@@ -220,19 +222,6 @@ set undoreload=10000
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Set path for buffer plugin
 set path=$PWD/**
-" CtrlP settings
-let g:ctrlp_match_window = 'bottom,order:ttb'
-" Always open a file in a new buffer
-let g:ctrlp_switch_buffer = 0
-" Set PWD to .svn/.git folder if found
-let g:ctrlp_working_path_mode = 'ra'
-" Use ag for filesearching wich is really fast! (sudo pacman -S the_silver_searcher will install ag)
-if executable("ag")
-    let g:ctrlp_user_command = 'ag %s -l --nocolor --path-to-ignore=~/.agignore  --hidden -g ""'
-endif
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.vim/ctrlp'
 " Prevent autocomplete to search in include files (which is painfully slow)
 set complete-=i
 "Better tab completion
