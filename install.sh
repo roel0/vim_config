@@ -27,6 +27,7 @@ plugin_name=(
    "completer"
    "codi"
    "flake8"
+   "table-mode"
    )
 plugin_loc=(
    "https://github.com/sjl/gundo.vim"
@@ -41,6 +42,7 @@ plugin_loc=(
    "https://github.com/maralla/completor.vim.git"
    "https://github.com/metakirby5/codi.vim"
    "https://github.com/nvie/vim-flake8"
+   "https://github.com/dhruvasagar/vim-table-mode"
    )
 color_name=(
   "peaksea"
