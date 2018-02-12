@@ -126,7 +126,7 @@ nmap <C-space> ?
 " Command to open bufferbrowser
 nmap <Leader>b :Buffers<CR>
 nmap <Leader>c :Commits<CR>
-nmap <C-p> :Files<CR>
+nmap <C-p> :Rooter<CR>:Files<CR>
 
 " Remaps for holding-shift-to-long-errors which happens to often
 command WQ wq

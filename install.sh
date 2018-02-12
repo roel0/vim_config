@@ -28,6 +28,7 @@ plugin_name=(
    "codi"
    "flake8"
    "table-mode"
+   "vim-rooter"
    )
 plugin_loc=(
    "https://github.com/sjl/gundo.vim"
@@ -43,6 +44,7 @@ plugin_loc=(
    "https://github.com/metakirby5/codi.vim"
    "https://github.com/nvie/vim-flake8"
    "https://github.com/dhruvasagar/vim-table-mode"
+   "https://github.com/airblade/vim-rooter"
    )
 color_name=(
   "peaksea"
