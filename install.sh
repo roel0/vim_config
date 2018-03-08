@@ -27,8 +27,6 @@ plugin_name=(
    "completer"
    "codi"
    "flake8"
-   "table-mode"
-   "vim-rooter"
    )
 plugin_loc=(
    "https://github.com/sjl/gundo.vim"
@@ -43,8 +41,8 @@ plugin_loc=(
    "https://github.com/maralla/completor.vim.git"
    "https://github.com/metakirby5/codi.vim"
    "https://github.com/nvie/vim-flake8"
-   "https://github.com/dhruvasagar/vim-table-mode"
-   "https://github.com/airblade/vim-rooter"
+   "https://github.com/vim-scripts/groovyindent-unix"
+   "https://github.com/vim-scripts/groovy.vim"
    )
 color_name=(
   "peaksea"

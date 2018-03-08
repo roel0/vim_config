@@ -87,7 +87,6 @@ set history=10000
 " change the terminal's title
 set title
 
-
 " Set command bar height
 set cmdheight=2
 
