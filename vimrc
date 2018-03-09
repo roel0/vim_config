@@ -126,7 +126,8 @@ set laststatus=2
 " Format the status line
 set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
 autocmd VimResized * wincmd =
-
+" Prevent autocomplete to search in include files (which is painfully slow)
+set complete-=i
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -328,7 +329,7 @@ function! LoadCscope()
         let path = strpart(db, 0, match(db, "/cscope.out$"))
         set nocscopeverbose
         exe "cs add " . db . " " . path
-        set cscopeverbose
+        set cscopetag cscopeverbose
     endif
 endfunction
 au BufEnter /* call LoadCscope()
