@@ -14,44 +14,6 @@
 
 INSTALL_TO=~
 DRYRUN=0
-plugin_name=(
-   "Gundo"
-   "Pathogen"
-   "fzf"
-   "Cscope_maps"
-   "Taglist"
-   "Startify"
-   "NerdCommenter"
-   "delimitMate"
-   "syntastic"
-   "completer"
-   "codi"
-   "flake8"
-   )
-plugin_loc=(
-   "https://github.com/sjl/gundo.vim"
-   "https://github.com/tpope/vim-pathogen"
-   "https://github.com/junegunn/fzf.vim"
-   "https://github.com/roel0/cscope_maps"
-   "https://github.com/vim-scripts/taglist.vim"
-   "https://github.com/mhinz/vim-startify"
-   "https://github.com/scrooloose/nerdcommenter"
-   "https://github.com/Raimondi/delimitMate"
-   "https://github.com/scrooloose/syntastic"
-   "https://github.com/maralla/completor.vim.git"
-   "https://github.com/metakirby5/codi.vim"
-   "https://github.com/nvie/vim-flake8"
-   "https://github.com/vim-scripts/groovyindent-unix"
-   "https://github.com/vim-scripts/groovy.vim"
-   )
-color_name=(
-  "peaksea"
-  "gruvbox"
-  )
-color_loc=(
-  "https://github.com/vim-scripts/peaksea"
-  "https://github.com/morhetz/gruvbox"
-  )
 dir=(
   "swap"
   "undo"
@@ -145,41 +107,9 @@ install_vimrc () {
     nonassert_fail git pull
     echo -n "Copying vimrc to install dir..."
     assert_fail cp ./vimrc $INSTALL_TO/.vimrc
-    echo -n "Creating tempory directory..."
-    assert_fail mkdir ./.roel0
-    _nonassert_fail cd .roel0
 
-    count=0
-    while [ "x${plugin_name[count]}" != "x" ]
-    do
-        echo -n "Downloading ${plugin_name[count]} plugin..."
-        assert_fail git clone ${plugin_loc[count]}
-        _nonassert_fail rm -rf */.git*
-        _nonassert_fail rm -rf */.hg*
-        _nonassert_fail cd *
-        echo -n "Installing ${plugin_name[count]} plugin..."
-        assert_fail cp -r ./* $INSTALL_TO/.vim
-        _nonassert_fail cd ..
-        echo -n "Removing tempory files..."
-        assert_fail rm -rf ./*
-        count=$(( $count + 1 ))
-      done
-
-    count=0
-    while [ "x${color_name[count]}" != "x" ]
-    do
-        echo -n "Downloading ${color_name[count]} colorscheme..."
-        assert_fail git clone ${color_loc[count]}
-        _nonassert_fail rm -rf */.git*
-        _nonassert_fail rm -rf */.hg*
-        _nonassert_fail cd *
-        echo -n "Installing ${color_name[count]} color..."
-        assert_fail cp -r ./* $INSTALL_TO/.vim
-        _nonassert_fail cd ..
-        echo -n "Removing tempory files..."
-        assert_fail rm -rf ./*
-        count=$(( $count + 1 ))
-      done
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
     count=0
     while [ "x${dir[count]}" != "x" ]
@@ -189,12 +119,6 @@ install_vimrc () {
         count=$(( $count + 1 ))
     done
 
-    echo -n "Removing temp dir..."
-    _nonassert_fail cd ..
-    assert_fail rm -rf ./.roel0
-
-    echo -n "Installing ag ignore list..."
-    assert_fail cp agignore ~/.agignore
     install_extra
 }
 install_extra() {
@@ -217,6 +141,8 @@ install_extra() {
             exit
             ;;
         esac
+    echo -e "Installing plugins ..."
+    vim +PlugInstall +qa > /dev/null 2>&1
     echo -e "\nInstallation finished, have fun!"
 }
 

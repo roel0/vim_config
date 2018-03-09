@@ -5,13 +5,32 @@
 "       https://github.com/roel0
 "
 " Version:
-"       1.0 - 11/02/16
+"       2.0 - 09/03/18
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+call plug#begin('~/.vim/plugged')
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'sjl/gundo.vim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'gnattishness/cscope_maps'
+    Plug 'mhinz/vim-startify'
+    Plug 'scrooloose/nerdcommenter'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'vim-syntastic/syntastic'
+    Plug 'nvie/vim-flake8'
+    Plug 'airblade/vim-rooter'
+    Plug 'vim-scripts/groovyindent-unix'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'morhetz/gruvbox'
+call plug#end()
 
 " Set vim direcotry to .vim (windows)
 let &runtimepath.=',$HOME/.vim'
@@ -61,11 +80,15 @@ syntax on
 filetype plugin indent on
 
 " colorsheme
-highlight Normal ctermfg=grey ctermbg=darkblue
-colorscheme peaksea
+try
+    colorscheme gruvbox
+    set background=dark
+catch /^Vim\%((\a\+)\)\=:E185/
+    silent! colorscheme default
+endtry
 
 " Clipboard enabled
-set clipboard+=unnamed,unnamedplus,autoselect 
+set clipboard+=unnamed,unnamedplus,autoselect
 set fileformat=unix
 
 " show trailing tabs/spaces
@@ -81,7 +104,7 @@ set cursorline
 " Don't redraw the screen during macros
 set lazyredraw
 
-" Remmber more commands
+" Remember more commands
 set history=10000
 
 " change the terminal's title
@@ -102,9 +125,7 @@ set laststatus=2
 
 " Format the status line
 set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
-
-" Set to auto read when a file is changed from the outside
-set autoread
+autocmd VimResized * wincmd =
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
@@ -142,8 +163,6 @@ map <Right> <Nop>
 " Paste from OS clipboard without autoindent
 set pastetoggle=<F2>
 
-" Toggle Codi
-nmap <F3> :Codi!!
 " Graphical undo list
 nmap <F5> :GundoToggle<CR>
 " Diff current buffer with the file on disk
@@ -221,61 +240,49 @@ set undoreload=10000
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Set path for buffer plugin
 set path=$PWD/**
-" Prevent autocomplete to search in include files (which is painfully slow)
-set complete-=i
 "Better tab completion
 set wildmode=longest,list,full
 set wildmenu
-
- "Pathogen manages runtimepath
-execute pathogen#infect()
+let g:deoplete#enable_at_startup = 1
 
 " Load standard tag files
 set tags=tags;/
-" set the tag list toggle automatically gain focus
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_WinWidth = 30
-
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-
-let skull = [
-\'',
-\'            ███████████████████████████',
-\'            ███████▀▀▀░░░░░░░▀▀▀███████',
-\'            ████▀░░░░░░░░░░░░░░░░░▀████',
-\'            ███│░░░░░░░░░░░░░░░░░░░│███',
-\'            ██▌│░░░░░░░░░░░░░░░░░░░│▐██',
-\'            ██░└┐░░░░░░░░░░░░░░░░░┌┘░██',
-\'            ██░░└┐░░░░░░░░░░░░░░░┌┘░░██',
-\'            ██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██',
-\'            ██▌░│██████▌░░░▐██████│░▐██',
-\'            ███░│▐███▀▀░░▄░░▀▀███▌│░███',
-\'            ██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██',
-\'            ██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██',
-\'            ████▄─┘██▌░░░░░░░▐██└─▄████',
-\'            █████░░▐█─┬┬┬┬┬┬┬─█▌░░█████',
-\'            ████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████',
-\'            █████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████',
-\'            ███████▄░░░░░░░░░░░▄███████',
-\'            ██████████▄▄▄▄▄▄▄██████████',
-\'            ███████████████████████████',
-\'  You are about to experience a potent dosage of',
-\'              Vim. Watch your steps.',
-\'',
-\'   ╔══════════════════════════════════════════╗',
-\'   ║           ⎋ HERE BE VIMPIRES ⎋           ║',
-\'   ╚══════════════════════════════════════════╝',
+let emoji = [
+            \'                     `---./////::///:--.`                         ',
+            \'                   --:/::::::/::::::/:::::.                       ',
+            \'               `--::::/::::::/::::::/::::::/-``      -:` ::.-:`   ',
+            \'  -.:.-.     ``:::::///::::///::::://::::://:::.      :-./.::--   ',
+            \'-.:`:`.-    .://:::/:-  `-////:::///.`  ////::::.     `:/:::--`   ',
+            \'-//::/:-   `-:://:::-     :/://::::-    `/://:::::-```::://::     ',
+            \' :/:::/-```::////:::-    `:////:::/:    .////:::////::::///:-     ',
+            \' -::://://:://///:://:.`.::////::://-.`.:////:::////` ``.//-      ',
+            \'  `:/:```:://////://////://////://////://////://////.    -/:.     ',
+            \'  `:::  :::::/:/::::/:/::::/:/::::/:/::::/:/::::/:/::`    .:::`   ',
+            \'  :::`  :/:::/://:::/://:::/://:::/://:::/://::/-.:/:-..```-:/:.  ',
+            \' `:::```:::::--/:::////:::////:::////:::////:::.``:::///://:/://-`',
+            \' ::::::::::::``:::::::/::::::/:::::://:::::/:-. `-:/::::-:--.....`',
+            \' -:-...``.:::. `--://///::::///::::///:://:-.   `-//.             ',
+            \'          -:/:`   .--://:://///::////:::-..     .:/-`             ',
+            \'           `//:`     ```.//:-//::/---```       .:/-`              ',
+            \'            .//:-        ..  ```-:           .:::.`               ',
+            \'             `:/::-    `--::::-.::/:.      -::::`                 ',
+            \'               .:::::-` ` `..//:-:::/-` .-:/:..                   ',
+            \'                 ``-:::/---. `:::-///:::/:..`                     ',
+            \'                    `.-::-:::-`::::://::`                         ',
+            \'                           `...::::://:::`                        ',
+            \'                              `:::::/::::-                        ',
+            \'                                ::////::/`                        ',
+            \'                                 .::-.``                          ',
+            \'                                                                  ',
+            \'         ╔══════════════════════════════════════════╗',
+            \'         ║           ⎋ HERE BE VIMPIRES ⎋           ║',
+            \'         ╚══════════════════════════════════════════╝',
 \]
-let delimitMate_expand_cr = 1
+
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+if exists("*SyntasticSatuslineFlag")
+    set statusline+=%{SyntasticStatuslineFlag()}
+endif
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
@@ -312,10 +319,7 @@ func! DeleteTrailingWS()
     %s/\s\+$//ge
     exe "normal `z"
 endfunc
-autocmd BufWrite *.c :call DeleteTrailingWS()
-autocmd BufWrite *.h :call DeleteTrailingWS()
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.groovy :call DeleteTrailingWS()
+autocmd BufWrite *.c *.h *.py *.groovy :call DeleteTrailingWS()
 
 " Autoloading Cscope Database
 function! LoadCscope()
@@ -330,11 +334,11 @@ endfunction
 au BufEnter /* call LoadCscope()
 
 function! CenterHeader(lines) abort
-    let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
+    let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
     let centered_lines = map(copy(a:lines), 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
     return centered_lines
 endfunction
-let g:startify_custom_header = CenterHeader(skull)
+let g:startify_custom_header = CenterHeader(g:emoji)
 
 function! s:DiffWithSaved()
     let filetype=&ft
@@ -381,7 +385,4 @@ function! UpdateCscope()
     call AsyncStart('cscope_gen.sh', 'UpdateCscopeCb')
 endfunction
 
-autocmd BufWrite *.c         :call UpdateCscope()
-autocmd BufWrite *.groovy    :call UpdateCscope()
-autocmd BufWrite *.h         :call UpdateCscope()
-autocmd BufWrite *.py        :call UpdateCscope()
+autocmd BufWrite *.c *.groovy *.h *.py :call UpdateCscope()
