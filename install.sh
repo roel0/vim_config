@@ -141,8 +141,10 @@ install_extra() {
             exit
             ;;
         esac
+    # sudo pacman -S python-jedi python-neovim
     echo -e "Installing plugins ..."
     vim +PlugInstall +qa > /dev/null 2>&1
+
     echo -e "\nInstallation finished, have fun!"
 }
 

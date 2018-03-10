@@ -30,6 +30,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-scripts/groovyindent-unix'
     Plug 'sheerun/vim-polyglot'
     Plug 'morhetz/gruvbox'
+    Plug 'zchee/deoplete-jedi'
+    Plug 'Shougo/neco-syntax'
+    Plug 'zchee/deoplete-clang'
 call plug#end()
 
 " Set vim direcotry to .vim (windows)
@@ -245,7 +248,8 @@ set path=$PWD/**
 set wildmode=longest,list,full
 set wildmenu
 let g:deoplete#enable_at_startup = 1
-
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/bin/clang'
 " Load standard tag files
 set tags=tags;/
 let emoji = [
