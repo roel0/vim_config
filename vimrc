@@ -32,7 +32,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'morhetz/gruvbox'
     Plug 'zchee/deoplete-jedi'
     Plug 'Shougo/neco-syntax'
-    Plug 'zchee/deoplete-clang'
+    Plug 'tweekmonster/deoplete-clang2'
 call plug#end()
 
 " Set vim direcotry to .vim (windows)
@@ -131,6 +131,8 @@ set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
 autocmd VimResized * wincmd =
 " Prevent autocomplete to search in include files (which is painfully slow)
 set complete-=i
+" Prevent preview window from opening
+set completeopt-=preview
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -248,8 +250,7 @@ set path=$PWD/**
 set wildmode=longest,list,full
 set wildmenu
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/bin/clang'
+let g:deoplete#sources#clang#executable = '/usr/bin/clang'
 " Load standard tag files
 set tags=tags;/
 let emoji = [
@@ -324,7 +325,7 @@ func! DeleteTrailingWS()
     %s/\s\+$//ge
     exe "normal `z"
 endfunc
-autocmd BufWrite *.c *.h *.py *.groovy :call DeleteTrailingWS()
+autocmd BufWrite *.c,*.h,*.py,*.groovy :call DeleteTrailingWS()
 
 " Autoloading Cscope Database
 function! LoadCscope()
@@ -390,4 +391,4 @@ function! UpdateCscope()
     call AsyncStart('cscope_gen.sh', 'UpdateCscopeCb')
 endfunction
 
-autocmd BufWrite *.c *.groovy *.h *.py :call UpdateCscope()
+autocmd BufWrite *.c,*.groovy,*.h,*.py :call UpdateCscope()
