@@ -24,8 +24,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'mhinz/vim-startify'
     Plug 'scrooloose/nerdcommenter'
     Plug 'jiangmiao/auto-pairs'
-    Plug 'vim-syntastic/syntastic'
-    Plug 'nvie/vim-flake8'
     Plug 'airblade/vim-rooter'
     Plug 'vim-scripts/groovyindent-unix'
     Plug 'sheerun/vim-polyglot'
@@ -33,6 +31,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'zchee/deoplete-jedi'
     Plug 'Shougo/neco-syntax'
     Plug 'tweekmonster/deoplete-clang2'
+    Plug 'w0rp/ale'
 call plug#end()
 
 " Set vim direcotry to .vim (windows)
@@ -128,6 +127,7 @@ set laststatus=2
 
 " Format the status line
 set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
+set statusline+=%{LinterStatus()}
 autocmd VimResized * wincmd =
 " Prevent autocomplete to search in include files (which is painfully slow)
 set complete-=i
@@ -173,8 +173,6 @@ set pastetoggle=<F2>
 nmap <F5> :GundoToggle<CR>
 " Diff current buffer with the file on disk
 nmap <F6> :Diffsaved
-" trigger flake8
-autocmd FileType python map <buffer> <F7> :call Flake8()<CR>
 
 " Map S as delete word and replace it without touching register
 nmap S "_diwP
@@ -203,6 +201,8 @@ nmap ' :TlistToggle<CR>
 
 " Remove the Windows ^M - when the encodings gets messed up
 nmap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+nmap <silent> <S-k> <Plug>(ale_previous_wrap)
+nmap <silent> <S-j> <Plug>(ale_next_wrap)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -285,22 +285,11 @@ let emoji = [
             \'         ╚══════════════════════════════════════════╝',
 \]
 
-set statusline+=%#warningmsg#
-if exists("*SyntasticSatuslineFlag")
-    set statusline+=%{SyntasticStatuslineFlag()}
-endif
-set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_check_on_w = 1
-let g:syntastic_loc_list_height=3
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['python', 'c'],'passive_filetypes': [] }
-let g:syntastic_c_remove_include_errors=1
-let g:syntastic_c_checkers=['make']
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'c': ['gcc'],
+\}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -357,40 +346,96 @@ function! s:DiffWithSaved()
 endfunction
 com! Diffsaved call s:DiffWithSaved()
 
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Async ( <3 VIM8 )
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! AsyncComplete(channel)
-    " show command output
-    if exists("g:debug")
-        execute "cfile! " . g:AsyncRunning
-        copen
-    endif
-    unlet g:AsyncRunning
-endfunction
-
 function! AsyncStart(command, cb)
     if v:version < 800
         echoerr 'Async functions require VIM8'
         return
     endif
-
-    if exists('g:AsyncRunning')
-        echo 'Already running task in background'
-    else
-        let g:AsyncRunning = tempname()
-        call job_start(a:command, {'close_cb': a:cb, 'out_io': 'file', 'out_name': g:AsyncRunning})
-    endif
+    call job_start(a:command, {'close_cb': a:cb})
 endfunction
 
+"
+" Auto update cscope database in background
+"
 function! UpdateCscopeCb(channel)
-    unlet g:AsyncRunning
+    unlet g:UpdateCscopeRunning
     call LoadCscope()
 endfunction
 
 function! UpdateCscope()
-    exe 'cs kill -1'
-    call AsyncStart('cscope_gen.sh', 'UpdateCscopeCb')
+    if !exists('g:UpdateCscopeRunning')
+        let g:UpdateCscopeRunning = 1
+        exe 'cs kill -1'
+        call AsyncStart('cscope_gen.sh', 'UpdateCscopeCb')
+    endif
+endfunction
+
+"
+" Scan makefile to perform near-perfect C-linting
+"
+function! SetAleOptionsGCCCb(channel)
+    let l:make_output = ''
+    while ch_status(a:channel, {'part': 'out'}) == 'buffered'
+        let l:make_output .= ch_read(a:channel)
+    endwhile
+
+    " Remove spaces from by example -Da=$(( 4 * 5 ))
+    let l:macro_end = 0
+    while 1
+        let l:macro = stridx(l:make_output, "$((", l:macro_end)
+        let l:macro_end = stridx(l:make_output, "))", l:macro)
+        if l:macro < 0 || l:macro_end < 0
+            break
+        endif
+        let l:make_output = l:make_output[0: l:macro] . 
+                            \ join(split(l:make_output[l:macro: l:macro_end]), "") .
+                            \ l:make_output[l:macro_end+1: -1]
+    endwhile
+
+    " Parse all compile options
+    " TODO make list of all default system include paths
+    let g:ale_c_gcc_options = "-I/usr/arm-none-eabi/include/"
+    let l:make_output = split(l:make_output, " ")
+    for l:option in l:make_output
+        if stridx(l:option, "-I") >= 0 ||
+           \ stridx(l:option, "-D") >= 0
+            let g:ale_c_gcc_options .= ' ' . l:option
+        endif
+    endfor
+    unlet g:SetAleOptionsGCCRunning
+endfunc
+
+function! SetAleOptionsGCC()
+    if !exists('g:SetAleOptionsGCCRunning')
+        let g:SetAleOptionsGCCRunning = 1
+        let l:path_opt = expand('%:p:h') . ';'
+        let l:makefile_path = findfile("Makefile", l:path_opt)
+        if l:makefile_path == ""
+            let l:makefile_path = findfile("makefile", l:path_opt)
+        endif
+        if l:makefile_path != ""
+            let l:path = fnamemodify(l:makefile_path, ':p:h')
+            call AsyncStart(["/bin/sh", "-c", "cd " . l:path . " && make -n"],
+                            \ 'SetAleOptionsGCCCb')
+        endif
+    endif
 endfunction
 
 autocmd BufWrite *.c,*.groovy,*.h,*.py :call UpdateCscope()
+autocmd BufEnter *.c :call SetAleOptionsGCC()

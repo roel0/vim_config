@@ -18,7 +18,6 @@ dir=(
   "swap"
   "undo"
   "backup"
-  "ctrlp"
   )
 print_help() {
   echo "Options:"
@@ -128,8 +127,6 @@ install_extra() {
             [Yy]* ) 
             echo -n "Installing cscope_gen.sh to /usr/bin..."
             assert_fail sudo cp extra/cscope_gen.sh /usr/bin
-            echo -n "Installing syntastic_gen.sh to /usr/bin..."
-            assert_fail sudo cp extra/syntastic_gen.sh /usr/bin
             break
             ;;
             [Nn]* ) 
@@ -144,6 +141,7 @@ install_extra() {
     # sudo pacman -S python-jedi python-neovim
     echo -e "Installing plugins ..."
     vim +PlugInstall +qa > /dev/null 2>&1
+    rm -rf $INSTALL_TO/.vim/plugged/ale/test
 
     echo -e "\nInstallation finished, have fun!"
 }
