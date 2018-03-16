@@ -359,6 +359,21 @@ function! LinterStatus() abort
     \)
 endfunction
 
+function! SetFlake8Options()
+    if !exists('g:SetFlake8OptionsRunning')
+        let g:SetFlake8OptionsRunning = 1
+        let l:path_opt = expand('%:p:h') . ';'
+        let l:flake8_path = findfile("setup.cfg", l:path_opt)
+        if type(l:flake8_path) == type([])
+            let l:flake8_path = l:flake8_path[0]
+        endif
+        if l:flake8_path != ""
+            let l:flake8_path = fnamemodify(l:flake8_path, '.:%p')
+            let g:ale_python_flake8_options='--config ' . l:flake8_path
+        endif
+    endif
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Async ( <3 VIM8 )
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -429,8 +444,11 @@ function! SetAleOptionsGCC()
         if l:makefile_path == ""
             let l:makefile_path = findfile("makefile", l:path_opt)
         endif
+        if type(l:makefile_path) == type([])
+            let l:makefile_path = makefile_path[0]
+        endif
         if l:makefile_path != ""
-            let l:path = fnamemodify(l:makefile_path, ':p:h')
+            let l:path = fnamemodify(l:makefile_path, '.:p:h')
             call AsyncStart(["/bin/sh", "-c", "cd " . l:path . " && make -n"],
                             \ 'SetAleOptionsGCCCb')
         endif
@@ -439,3 +457,4 @@ endfunction
 
 autocmd BufWrite *.c,*.groovy,*.h,*.py :call UpdateCscope()
 autocmd BufEnter *.c :call SetAleOptionsGCC()
+autocmd BufEnter *.py :call SetFlake8Options()
