@@ -32,6 +32,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'Shougo/neco-syntax'
     Plug 'tweekmonster/deoplete-clang2'
     Plug 'w0rp/ale'
+    Plug 'junegunn/vader.vim'
 call plug#end()
 
 " Set vim direcotry to .vim (windows)
@@ -290,6 +291,7 @@ let g:ale_linters = {
 \   'python': ['flake8'],
 \   'c': ['gcc'],
 \}
+let g:ale_c_parse_makefile=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -401,60 +403,6 @@ function! UpdateCscope()
     endif
 endfunction
 
-"
-" Scan makefile to perform near-perfect C-linting
-"
-function! SetAleOptionsGCCCb(channel)
-    let l:make_output = ''
-    while ch_status(a:channel, {'part': 'out'}) == 'buffered'
-        let l:make_output .= ch_read(a:channel)
-    endwhile
-
-    " Remove spaces from by example -Da=$(( 4 * 5 ))
-    let l:macro_end = 0
-    while 1
-        let l:macro = stridx(l:make_output, "$((", l:macro_end)
-        let l:macro_end = stridx(l:make_output, "))", l:macro)
-        if l:macro < 0 || l:macro_end < 0
-            break
-        endif
-        let l:make_output = l:make_output[0: l:macro] . 
-                            \ join(split(l:make_output[l:macro: l:macro_end]), "") .
-                            \ l:make_output[l:macro_end+1: -1]
-    endwhile
-
-    " Parse all compile options
-    " TODO make list of all default system include paths
-    let g:ale_c_gcc_options = "-I/usr/arm-none-eabi/include/"
-    let l:make_output = split(l:make_output, " ")
-    for l:option in l:make_output
-        if stridx(l:option, "-I") >= 0 ||
-           \ stridx(l:option, "-D") >= 0
-            let g:ale_c_gcc_options .= ' ' . l:option
-        endif
-    endfor
-    unlet g:SetAleOptionsGCCRunning
-endfunc
-
-function! SetAleOptionsGCC()
-    if !exists('g:SetAleOptionsGCCRunning')
-        let g:SetAleOptionsGCCRunning = 1
-        let l:path_opt = expand('%:p:h') . ';'
-        let l:makefile_path = findfile("Makefile", l:path_opt)
-        if l:makefile_path == ""
-            let l:makefile_path = findfile("makefile", l:path_opt)
-        endif
-        if type(l:makefile_path) == type([])
-            let l:makefile_path = makefile_path[0]
-        endif
-        if l:makefile_path != ""
-            let l:path = fnamemodify(l:makefile_path, '.:p:h')
-            call AsyncStart(["/bin/sh", "-c", "cd " . l:path . " && make -n"],
-                            \ 'SetAleOptionsGCCCb')
-        endif
-    endif
-endfunction
-
 autocmd BufWrite *.c,*.groovy,*.h,*.py :call UpdateCscope()
-autocmd BufEnter *.c :call SetAleOptionsGCC()
+autocmd BufEnter *.c,*.groovy,*.h,*.py :Rooter
 autocmd BufEnter *.py :call SetFlake8Options()
