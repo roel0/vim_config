@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ## Script to install a vim configuration
 ## Copyright (C) 2016 Roel Postelmans - All Rights Reserved
 ## Permission to copy and modify is granted under the foo license
