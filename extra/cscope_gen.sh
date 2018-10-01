@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author: Roel Postelmans
 
-path="$(readlink -f ./)"
+path="$(pwd)"
 db_path=""
 cwd=$(pwd)
 # Search for existing database
@@ -38,13 +38,15 @@ if [[ ! -d $db_path || -z $db_path ]]; then
     return
 fi
 
-
 echo "Creating cscope database at $db_path"
 cd $db_path
 
 find $PWD -name '*.py' \
 -o -iname '*.[CH]' \
+-o -iname '*.js' \
+-o -iname '*.rs' \
 -o -iname '*.groovy' \
+-o -iname '*.java' \
 > cscope.files
 
 # -b: just build

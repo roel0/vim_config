@@ -14,25 +14,36 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 call plug#begin('~/.vim/plugged')
-    Plug 'Shougo/deoplete.nvim'
+    " autocomplete
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'tweekmonster/deoplete-clang2'
+    " Undo tree
     Plug 'sjl/gundo.vim'
+    " Fuzzy file search
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
+    " Good cscope bindings
     Plug 'gnattishness/cscope_maps'
+    " Startup screen
     Plug 'mhinz/vim-startify'
+    " Comment pluging
     Plug 'scrooloose/nerdcommenter'
-    Plug 'jiangmiao/auto-pairs'
+    " Autoclosing ({'...'})
+    Plug 'Townk/vim-autoclose'
+    " Find project root
     Plug 'airblade/vim-rooter'
-    Plug 'vim-scripts/groovyindent-unix'
+    " Collection of syntax files
     Plug 'sheerun/vim-polyglot'
+    " Colorsheme
     Plug 'morhetz/gruvbox'
-    Plug 'zchee/deoplete-jedi'
-    Plug 'Shougo/neco-syntax'
-    Plug 'tweekmonster/deoplete-clang2'
+    " Syntax checker
     Plug 'w0rp/ale'
-    Plug 'junegunn/vader.vim'
+    " Status line
+    Plug 'itchyny/lightline.vim'
+    " Whats in a name
+    Plug 'tpope/vim-surround'
 call plug#end()
 
 " Set vim direcotry to .vim (windows)
@@ -125,10 +136,9 @@ set foldcolumn=1
 
 " Always show the status line
 set laststatus=2
+" Remove duplicated insert
+set noshowmode
 
-" Format the status line
-set statusline=%<\ %n:%f\ %m%r%y%=%-35.(line:\ %l\ of\ %L,\ col:\ %c%V\ (%P)%)
-set statusline+=%{LinterStatus()}
 autocmd VimResized * wincmd =
 " Prevent autocomplete to search in include files (which is painfully slow)
 set complete-=i
@@ -214,9 +224,8 @@ set wildignore+=*/.git/*,*.obj,*.map,*.mmf
 
 " Dir to store backup of files
 set backupdir=~/.vim/backup//
-" Dir to store the swap files
-set directory=~/.vim/swap//
-
+" Disable swap file
+set noswapfile
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Searching
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -398,11 +407,16 @@ endfunction
 function! UpdateCscope()
     if !exists('g:UpdateCscopeRunning')
         let g:UpdateCscopeRunning = 1
-        exe 'cs kill -1'
+        exe 'silent cs kill -1'
         call AsyncStart('cscope_gen.sh', 'UpdateCscopeCb')
     endif
 endfunction
 
-autocmd BufWrite *.c,*.groovy,*.h,*.py :call UpdateCscope()
-autocmd BufEnter *.c,*.groovy,*.h,*.py :Rooter
-autocmd BufEnter *.py :call SetFlake8Options()
+function! SourceEnter()
+    exe 'silent Rooter'
+    call UpdateCscope()
+endfunction
+
+autocmd BufWrite *.c,*.groovy,*.h,*.py call SourceEnter()
+autocmd BufRead *.c,*.groovy,*.h,*.py call SourceEnter()
+autocmd BufRead *.py :call SetFlake8Options()

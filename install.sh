@@ -84,7 +84,6 @@ install_vimrc () {
         read -p "Do you wish to overwrite this configuration? [yes/no] " yn
         case $yn in
             [Yy]* ) 
-            break
             ;;
             [Nn]* ) 
             exit
@@ -127,10 +126,8 @@ install_extra() {
             [Yy]* ) 
             echo -n "Installing cscope_gen.sh to /usr/bin..."
             assert_fail sudo cp extra/cscope_gen.sh /usr/bin
-            break
             ;;
             [Nn]* ) 
-            break
             ;;
             * ) 
             echo "Please answer yes or no."
@@ -138,7 +135,6 @@ install_extra() {
             exit
             ;;
         esac
-    # sudo pacman -S python-jedi python-neovim
     echo -e "Installing plugins ..."
     vim +PlugInstall +qa > /dev/null 2>&1
     rm -rf $INSTALL_TO/.vim/plugged/ale/test
