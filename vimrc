@@ -303,6 +303,9 @@ let g:ale_linters = {
 \   'c': ['gcc'],
 \}
 let g:ale_c_parse_makefile=1
+
+" Prevent autoclose form hijacking ESC
+let g:AutoClosePumvisible = {"ENTER": "<C-Y>", "ESC": "<ESC>"}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
