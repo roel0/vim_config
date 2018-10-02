@@ -177,6 +177,8 @@ map <Down> <Nop>
 map <Left> <Nop>
 map <Right> <Nop>
 
+set autoindent
+
 " Paste from OS clipboard without autoindent
 set pastetoggle=<F2>
 
