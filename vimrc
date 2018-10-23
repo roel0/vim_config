@@ -46,9 +46,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     " Git
     Plug 'tpope/vim-fugitive'
+    Plug 'elzr/vim-json'
 call plug#end()
 
-" Set vim direcotry to .vim (windows)
+" Set vim directory to .vim (windows)
 let &runtimepath.=',$HOME/.vim'
 " set UTF-8 encoding
 set enc=utf-8
@@ -431,3 +432,4 @@ endfunction
 autocmd BufWrite *.c,*.groovy,*.h,*.py call SourceEnter()
 autocmd BufRead *.c,*.groovy,*.h,*.py call SourceEnter()
 autocmd BufRead *.py :call SetFlake8Options()
+autocmd BufNewFile,BufRead *.amc set filetype=json

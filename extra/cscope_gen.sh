@@ -1,33 +1,32 @@
 #!/bin/bash
 # Author: Roel Postelmans
-
-path="$(pwd)"
+cscope_db="cscope.out"
 db_path=""
 cwd=$(pwd)
+
 # Search for existing database
-while [[ $path != / ]];
+IFS='/' read -ra dirs <<< "$(pwd)"
+path=
+for dir in "${dirs[@]}"
 do
-    if [[ -f "cscope.out" ]]; then
-        db_path=$(readlink -f .)
-        break
+    path+=$dir/
+    if [[ -f $cscope_db && -r $cscope_db ]]; then
+        db_path=$path
     fi
-    cd ..
-    path=$(readlink -f ./)
 done
 
 #if no datase is found, try to find the root of the project
 #git?
 if [[ -z $db_path ]]; then
-    cd $cwd
-    db_path=$(git rev-parse --show-toplevel 2> /dev/null)
-    parent_path=$db_path
-    # Be sure we are not in a submodule
-    while [[ -d $parent_path && ! -z $parent_path ]]; do
-        db_path=$parent_path
-        cd ..
-        parent_path=$(git rev-parse --show-toplevel 2>  /dev/null)
+    IFS='/' read -ra dirs <<< "$(pwd)"
+    path=
+    for dir in "${dirs[@]}"
+    do
+        path+=$dir/
+        [ -d $path/.git ] && db_path=$path && break
     done
 fi
+
 #svn?
 if [[ ! -d $db_path && -z $db_path ]]; then
     db_path=$(svn info . 2> /dev/null | grep -F "Working Copy Root Path:" | awk '{print $5}')
@@ -35,18 +34,23 @@ fi
 
 #unknown kind of scm
 if [[ ! -d $db_path || -z $db_path ]]; then
-    return
+    echo "No project root found"
+    exit
 fi
 
 echo "Creating cscope database at $db_path"
 cd $db_path
 
-find $PWD -name '*.py' \
--o -iname '*.[CH]' \
--o -iname '*.js' \
--o -iname '*.rs' \
--o -iname '*.groovy' \
--o -iname '*.java' \
+find $PWD -iname '*.py' \
+       -o -iname '*.[CH]' \
+       -o -iname '*.js' \
+       -o -iname '*.rs' \
+       -o -iname '*.cs' \
+       -o -iname '*.groovy' \
+       -o -iname '*.java' \
+       -o -iname '*.mk' \
+       -o -iname 'Makefile' \
+       | xargs -I {} echo '"{}" ' \
 > cscope.files
 
 # -b: just build
@@ -54,4 +58,5 @@ find $PWD -name '*.py' \
 # -c: uncompressed
 cscope -b -q -c
 # cleanup
-rm cscope.files
+#rm cscope.files
+cd $cwd
