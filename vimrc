@@ -397,6 +397,12 @@ function! SetFlake8Options()
     endif
 endfunction
 
+function! RestoreCursor()
+    if line("'\"") > 1 && line("'\"") <= line('$')
+        normal! g`"
+        return 1
+    endif
+endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Async ( <3 VIM8 )
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -433,3 +439,4 @@ autocmd BufWrite *.c,*.groovy,*.h,*.py call SourceEnter()
 autocmd BufRead *.c,*.groovy,*.h,*.py call SourceEnter()
 autocmd BufRead *.py :call SetFlake8Options()
 autocmd BufNewFile,BufRead *.amc set filetype=json
+autocmd BufWinEnter * call RestoreCursor()
