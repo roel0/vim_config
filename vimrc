@@ -75,6 +75,7 @@ set formatoptions-=t
 
 " turn line numbers o
 set number
+set relativenumber
 
 " highlight matching braces
 set showmatch
@@ -98,8 +99,8 @@ filetype plugin indent on
 
 " colorsheme
 try
-    colorscheme gruvbox
     set background=dark
+    colorscheme gruvbox
 catch /^Vim\%((\a\+)\)\=:E185/
     silent! colorscheme default
 endtry
@@ -299,6 +300,13 @@ let g:ale_linters = {
 \   'c': ['gcc'],
 \}
 let g:ale_c_parse_makefile=1
+" Might be overwritten by SetFlake8Options
+let g:ale_python_flake8_options='--max-line-length 120'
+let g:ale_sign_warning='●'
+hi ALEErrorSign ctermfg=13 ctermbg=none
+let g:ale_sign_error='●'
+hi ALEWarningSign ctermfg=yellow ctermbg=none
+let g:ale_sign_column_always = 0
 
 " Prevent autoclose form hijacking ESC
 let g:AutoClosePumvisible = {"ENTER": "<C-Y>", "ESC": "<ESC>"}
@@ -323,13 +331,17 @@ function! ToggleRelNumber()
          set number
      else
          set relativenumber
+         set number
      endif
 endfunc
 
+
 function! ToggleNumber()
     if(&number == 0)
+        set norelativenumber
         set number
-    else
+k   else
+        set norelativenumber
         set nonumber
     endif
 endfunc
@@ -437,6 +449,8 @@ endfunction
 
 autocmd BufWrite *.c,*.groovy,*.h,*.py call SourceEnter()
 autocmd BufRead *.c,*.groovy,*.h,*.py call SourceEnter()
-autocmd BufRead *.py :call SetFlake8Options()
+autocmd BufWinEnter,BufRead *.py :call SetFlake8Options()
 autocmd BufNewFile,BufRead *.amc set filetype=json
 autocmd BufWinEnter * call RestoreCursor()
+
+set background=dark
