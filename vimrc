@@ -47,6 +47,8 @@ call plug#begin('~/.vim/plugged')
     " Git
     Plug 'tpope/vim-fugitive'
     Plug 'elzr/vim-json'
+    " Camel and sanke case movements
+    Plug 'bkad/CamelCaseMotion'
 call plug#end()
 
 " Set vim directory to .vim (windows)
@@ -324,6 +326,8 @@ set fillchars+=vert:\
 
 " Change rooter to always root to the parent repo
 let g:rooter_patterns = ['.git/', '.git', 'Makefile', 'makefile', 'pom.xml']
+
+call camelcasemotion#CreateMotionMappings('<leader>')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
