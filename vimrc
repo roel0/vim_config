@@ -25,7 +25,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     " Good cscope bindings
-    Plug 'gnattishness/cscope_maps'
+    Plug 'chazy/cscope_maps'
     " Startup screen
     Plug 'mhinz/vim-startify'
     " Comment pluging
@@ -213,13 +213,13 @@ map <C-l> <C-w>l
 nmap <Leader>, :call ToggleRelNumber()<CR>
 nmap <Leader>. :call ToggleNumber()<CR>
 
-" map it to ' , near the search /
-nmap ' :TlistToggle<CR>
+" Ale
+nmap <Leader>n :lnext<CR>
+nmap <Leader>p :lprevious<CR>
+nmap <Leader>r :lrewind<CR>
 
 " Remove the Windows ^M - when the encodings gets messed up
 nmap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-nmap <silent> <S-k> <Plug>(ale_previous_wrap)
-nmap <silent> <S-j> <Plug>(ale_next_wrap)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -321,6 +321,9 @@ let g:lightline = {
     \ }
     \}
 set fillchars+=vert:\ 
+
+" Change rooter to always root to the parent repo
+let g:rooter_patterns = ['.git/', '.git', 'Makefile', 'makefile', 'pom.xml']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -380,19 +383,6 @@ function! s:DiffWithSaved()
     exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! Diffsaved call s:DiffWithSaved()
-
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    return l:counts.total == 0 ? 'OK' : printf(
-    \   '%dW %dE',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
 
 function! SetFlake8Options()
     if !exists('g:SetFlake8OptionsRunning')
