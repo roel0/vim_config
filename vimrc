@@ -397,7 +397,7 @@ function! SetFlake8Options()
             let l:flake8_path = l:flake8_path[0]
         endif
         if l:flake8_path != ""
-            let l:flake8_path = fnamemodify(l:flake8_path, '.:%p')
+            let l:flake8_path = fnamemodify(l:flake8_path, ':p')
             let g:ale_python_flake8_options='--config ' . l:flake8_path
         endif
     endif
