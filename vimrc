@@ -325,7 +325,7 @@ let g:lightline = {
 set fillchars+=vert:\ 
 
 " Change rooter to always root to the parent repo
-let g:rooter_patterns = ['.git/', '.git', 'Makefile', 'makefile', 'pom.xml']
+let g:rooter_patterns = ['.git/', '.git', 'Makefile', 'makefile', 'pom.xml', '.svn/']
 
 call camelcasemotion#CreateMotionMappings('<leader>')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
