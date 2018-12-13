@@ -239,6 +239,7 @@ set noswapfile
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Searching is not case sensitive
 set ignorecase
+set smartcase
 " Move to a match while still typing th e pattern
 set incsearch
 " Highlight search
@@ -347,7 +348,7 @@ function! ToggleNumber()
     if(&number == 0)
         set norelativenumber
         set number
-k   else
+    else
         set norelativenumber
         set nonumber
     endif
